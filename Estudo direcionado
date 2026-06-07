@@ -1,0 +1,1031 @@
+ <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ESTUDO DIRIGIDO · HTML, CSS, JavaScript, Matemática, IHC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0b1120; --bg-card: #1e293b; --bg-page: #0f172a;
+            --text: #e2e8f0; --text-secondary: #94a3b8; --accent: #3b82f6;
+            --accent-hover: #2563eb; --purple: #a855f7; --success: #22c55e;
+            --danger: #ef4444; --warning: #facc15; --border: #334155;
+            --radius: 1rem; --radius-lg: 1.8rem; --transition: 0.3s ease;
+            --shadow: 0 12px 25px rgba(0,0,0,0.3);
+        }
+        body.light {
+            --bg: #f8fafc; --bg-card: #ffffff; --bg-page: #f1f5f9;
+            --text: #0f172a; --text-secondary: #475569; --border: #cbd5e1;
+            --shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 85%, black) 100%);
+            font-family: 'Inter', sans-serif; color: var(--text);
+            min-height: 100vh; padding: 1.5rem;
+            transition: background 0.4s, color 0.4s;
+        }
+        .skip-link { position: absolute; top: -40px; left: 0; background: var(--accent); color: #fff; padding: 8px; z-index: 100; transition: top 0.2s; }
+        .skip-link:focus { top: 0; }
+        .app { max-width: 1400px; margin: 0 auto; }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+            background: var(--bg-card); padding: 0.8rem 1.5rem;
+            border-radius: var(--radius); border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .site-name {
+            font-weight: 800; font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--purple), var(--accent));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            white-space: nowrap;
+        }
+        .search-box {
+            display: flex; align-items: center; gap: 0.5rem;
+            background: var(--bg); border-radius: 30px; padding: 0.5rem 1.2rem;
+            border: 2px solid var(--border); flex: 1; max-width: 450px;
+            transition: border-color 0.3s;
+        }
+        .search-box:focus-within { border-color: var(--accent); }
+        .search-box input {
+            background: transparent; border: none; outline: none;
+            color: var(--text); font-size: 0.95rem; width: 100%;
+        }
+        .search-box i { color: var(--text-secondary); }
+        .user-area { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .badge-icon { font-size: 1.5rem; filter: grayscale(1); opacity: 0.3; }
+        .badge-icon.earned { filter: grayscale(0); opacity: 1; }
+        .points-badge, .streak-badge {
+            padding: 0.35rem 0.9rem; border-radius: 20px;
+            font-weight: 700; font-size: 0.85rem; white-space: nowrap;
+        }
+        .points-badge { background: var(--accent); color: white; }
+        .streak-badge { background: var(--warning); color: black; }
+        .btn-icon {
+            background: var(--bg); border: 1px solid var(--border); color: var(--text);
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            font-size: 1.1rem; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-icon:hover { background: var(--accent); color: white; }
+        .greeting { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+
+        /* HERO */
+        .hero {
+            text-align: center; margin-bottom: 1.5rem; padding: 2rem 1rem 1.5rem;
+            background: var(--bg-card); backdrop-filter: blur(8px);
+            border-radius: var(--radius-lg); border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--purple), var(--accent));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            margin-bottom: 0.3rem;
+        }
+        .hero h1 i { margin-right: 10px; color: #60a5fa; }
+        .hero .subtitle { color: var(--text-secondary); font-size: 1rem; margin-top: 5px; }
+        .hero .status-bar {
+            display: flex; justify-content: center; gap: 2rem;
+            margin-top: 1rem; flex-wrap: wrap;
+        }
+        .status-item {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.9rem; color: var(--text-secondary);
+        }
+        .status-item i { color: var(--accent); }
+        .status-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--success); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .user-name-input {
+            display: flex; gap: 0.5rem; align-items: center;
+            justify-content: center; margin-top: 1rem;
+        }
+        .user-name-input input {
+            background: var(--bg); border: 1px solid var(--border);
+            color: var(--text); padding: 0.5rem 1rem;
+            border-radius: 20px; font-size: 0.9rem;
+        }
+        .btn-small {
+            background: var(--accent); border: none; color: white;
+            padding: 0.4rem 1rem; border-radius: 20px;
+            cursor: pointer; font-size: 0.85rem;
+        }
+
+        /* ROADMAP */
+        .roadmap-label {
+            text-align: center; margin-bottom: 0.8rem;
+            color: var(--text-secondary); font-size: 0.85rem;
+            font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .roadmap {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            align-items: center; gap: 0.5rem 1.5rem; margin-bottom: 2.5rem;
+        }
+        .roadmap-step {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0.4rem; cursor: pointer; transition: var(--transition);
+            position: relative; padding: 0.5rem;
+        }
+        .roadmap-step .circle {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: var(--bg-card); border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .roadmap-step.completed .circle {
+            background: var(--success); border-color: var(--success); color: white;
+        }
+        .roadmap-step:hover .circle { border-color: var(--accent); transform: scale(1.1); }
+        .roadmap-step .label {
+            font-size: 0.75rem; color: var(--text-secondary);
+            font-weight: 500; text-align: center; max-width: 80px;
+        }
+        .roadmap-connector {
+            width: 35px; height: 3px; background: var(--border);
+            border-radius: 3px; flex-shrink: 0;
+        }
+        .roadmap-connector.done { background: var(--success); }
+        @media (max-width: 800px) {
+            .roadmap { flex-direction: column; gap: 0.8rem; }
+            .roadmap-connector { width: 3px; height: 25px; }
+        }
+        /* CARDS */
+        .card-section-title {
+            text-align: center; color: var(--text-secondary);
+            font-size: 0.85rem; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 1rem;
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem; margin-bottom: 2rem;
+        }
+        .topic-card {
+            background: var(--bg-card); border-radius: var(--radius-lg);
+            padding: 1.6rem; cursor: pointer; transition: all var(--transition);
+            border: 1px solid var(--border); box-shadow: var(--shadow);
+            display: flex; flex-direction: column; gap: 0.9rem;
+            outline: none; position: relative; min-height: 340px;
+        }
+        .topic-card:hover {
+            transform: translateY(-5px); border-color: var(--accent);
+            box-shadow: 0 18px 30px rgba(0,0,0,0.4);
+        }
+        .topic-card:focus-visible {
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.5);
+            border-color: var(--accent);
+        }
+        .topic-card .card-accent {
+            position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+            transition: width 0.3s;
+        }
+        .topic-card.html-card .card-accent { background: #e34c26; }
+        .topic-card.css-card .card-accent { background: #2965f1; }
+        .topic-card.js-card .card-accent { background: #f7df1e; }
+        .topic-card.math-card .card-accent { background: var(--purple); }
+        .topic-card.ihc-card .card-accent { background: #10b981; }
+        .topic-card.quiz-card .card-accent { background: var(--warning); }
+        .topic-card:hover .card-accent { width: 10px; }
+        .card-header {
+            display: flex; align-items: center; gap: 12px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--border);
+        }
+        .card-header i { font-size: 2.5rem; }
+        .html-card .card-header i { color: #e34c26; }
+        .css-card .card-header i { color: #2965f1; }
+        .js-card .card-header i { color: #f7df1e; }
+        .math-card .card-header i { color: var(--purple); }
+        .ihc-card .card-header i { color: #10b981; }
+        .quiz-card .card-header i { color: var(--warning); }
+        .card-header h3 { font-size: 1.5rem; font-weight: 700; }
+        .completed-badge {
+            position: absolute; top: 1rem; right: 1rem;
+            background: var(--success); color: #000;
+            padding: 0.3rem 0.8rem; border-radius: 30px;
+            font-weight: 600; font-size: 0.8rem; display: none; z-index: 2;
+        }
+        .topic-card.completed .completed-badge { display: block; }
+        .info-preview { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; flex: 1; }
+        .info-preview strong { color: var(--text); display: block; margin-top: 0.5rem; }
+        .info-preview ul { margin: 0.3rem 0 0 1.2rem; list-style-type: disc; }
+        .info-preview li { margin-bottom: 0.2rem; font-size: 0.85rem; }
+        .info-preview code {
+            background: var(--bg); padding: 2px 6px; border-radius: 6px;
+            font-family: 'Courier New', monospace; color: var(--warning); font-size: 0.8rem;
+        }
+        .card-meta {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.75rem; color: var(--text-secondary);
+        }
+        .card-meta i { margin-right: 4px; }
+        .btn-action {
+            background: var(--accent); border: none; padding: 12px;
+            border-radius: 40px; color: white; font-weight: 600;
+            text-align: center; font-size: 0.95rem;
+            transition: background 0.2s; cursor: pointer;
+        }
+        .topic-card:hover .btn-action { background: var(--accent-hover); }
+
+        /* PAGES */
+        .page-container {
+            background: var(--bg-page); border-radius: var(--radius-lg);
+            padding: 2rem; margin-top: 1.5rem; border: 1px solid var(--border);
+            display: none; animation: fadeIn 0.3s ease;
+        }
+        .page-container.active-page { display: block; }
+        .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent); padding-bottom: 0.8rem;
+        }
+        .back-btn {
+            background: var(--border); border: none; padding: 0.6rem 1.4rem;
+            border-radius: 40px; color: white; font-weight: 500;
+            cursor: pointer; transition: 0.2s; font-size: 0.95rem;
+        }
+        .back-btn:hover { background: var(--accent); }
+        .trail {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;
+            background: var(--bg-card); padding: 0.8rem 1.2rem;
+            border-radius: var(--radius); border: 1px solid var(--border);
+        }
+        .trail a {
+            color: var(--text-secondary); text-decoration: none;
+            font-weight: 500; font-size: 0.85rem; padding: 0.3rem 0.8rem;
+            border-radius: 20px; transition: var(--transition);
+            background: var(--bg-page); white-space: nowrap;
+        }
+        .trail a:hover, .trail a.active { background: var(--accent); color: white; }
+        .content-section { line-height: 1.8; font-size: 1rem; }
+        .content-section h2 {
+            color: #60a5fa; margin: 2.5rem 0 1rem;
+            border-left: 4px solid var(--accent); padding-left: 1rem; font-size: 1.6rem;
+        }
+        .content-section h3 { color: var(--purple); margin: 1.8rem 0 0.8rem; font-size: 1.3rem; }
+        .content-section p { margin: 0.8rem 0; color: var(--text-secondary); }
+        pre {
+            background: #0b1120; padding: 1.2rem; border-radius: var(--radius);
+            overflow-x: auto; margin: 1.2rem 0; border-left: 4px solid var(--accent);
+            font-family: 'Courier New', monospace; font-size: 0.9rem; color: #e2e8f0;
+        }
+        body.light pre { background: #e2e8f0; color: #0f172a; }
+        code { background: #1e293b; padding: 2px 8px; border-radius: 12px; color: var(--warning); }
+        table {
+            width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+            background: var(--bg-card); border-radius: var(--radius); overflow: hidden;
+        }
+        th, td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); text-align: left; }
+        th { background: #2d3a5e; font-weight: 600; }
+        body.light th { background: #cbd5e1; color: #0f172a; }
+        ul, ol { padding-left: 2rem; margin: 1rem 0; }
+        li { margin: 0.5rem 0; color: var(--text-secondary); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+        .analogy-box {
+            background: #1a2a1a; border-left: 4px solid var(--success);
+            padding: 1rem 1.2rem; border-radius: var(--radius);
+            margin: 1rem 0; color: #86efac;
+        }
+        body.light .analogy-box { background: #dcfce7; color: #166534; }
+        .analogy-box strong { color: #4ade80; }
+        .info-box {
+            background: #1a1a2e; border-left: 4px solid var(--accent);
+            padding: 1rem 1.2rem; border-radius: var(--radius);
+            margin: 1rem 0; color: #93c5fd;
+        }
+        .challenge-box {
+            background: #2d2a1a; border-left: 4px solid var(--warning);
+            padding: 1rem 1.2rem; border-radius: var(--radius);
+            margin: 1rem 0; color: #fde68a;
+        }
+        body.light .challenge-box { background: #fefce8; color: #854d0e; }
+        .live-editor {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;
+        }
+        @media (max-width: 700px) { .live-editor { grid-template-columns: 1fr; } }
+        .live-editor textarea {
+            background: #0b1120; color: #e2e8f0; border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1rem;
+            font-family: 'Courier New', monospace; font-size: 0.85rem;
+            resize: vertical; min-height: 200px;
+        }
+        body.light .live-editor textarea { background: #e2e8f0; color: #0f172a; }
+        .live-editor iframe {
+            background: white; border: 1px solid var(--border);
+            border-radius: var(--radius); width: 100%; min-height: 200px;
+        }
+        .quiz-item {
+            background: var(--bg-card); border-radius: var(--radius);
+            padding: 1.5rem; margin: 1.5rem 0;
+        }
+        .quiz-question { font-weight: 600; margin-bottom: 1rem; color: var(--text); font-size: 1.05rem; }
+        .quiz-options label {
+            display: block; margin: 0.6rem 0; cursor: pointer;
+            padding: 0.5rem; border-radius: 8px; transition: background 0.2s;
+        }
+        .quiz-options label:hover { background: #2d3a5e; }
+        .quiz-feedback {
+            margin-top: 1rem; padding: 0.7rem; border-radius: 8px;
+            font-weight: 500; display: none;
+        }
+        .correct-feedback { background: #14532d; color: #86efac; border-left: 4px solid var(--success); display: block; }
+        .wrong-feedback { background: #7f1d1d; color: #fca5a5; border-left: 4px solid var(--danger); display: block; }
+        .btn-check {
+            background: var(--accent); border: none; color: white;
+            padding: 0.7rem 1.5rem; border-radius: 30px; margin-top: 0.8rem;
+            cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: background 0.2s;
+        }
+        .btn-check:hover { background: var(--accent-hover); }
+        .quiz-score {
+            text-align: center; padding: 1.5rem; margin-top: 2rem;
+            background: var(--bg-card); border-radius: var(--radius);
+            font-size: 1.2rem; font-weight: 600;
+        }
+        .btn-cert {
+            background: var(--success); border: none; color: black;
+            padding: 0.8rem 2rem; border-radius: 30px; cursor: pointer;
+            font-weight: 600; margin-top: 1rem; font-size: 1rem; transition: background 0.2s;
+        }
+        .btn-cert:hover { background: #16a34a; }
+        .img-emoji { font-size: 3rem; text-align: center; display: block; margin: 1rem 0; }
+        .karnaugh-table { display: inline-table; margin: 1rem; }
+        .karnaugh-table td { text-align: center; width: 50px; height: 40px; }
+        .karnaugh-table th { text-align: center; }
+        footer { text-align: center; margin-top: 3rem; color: #5b6e8c; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+<a href="#mainPage" class="skip-link">Pular para conteúdo principal</a>
+<div class="app">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <span class="site-name">📘 ESTUDO DIRIGIDO</span>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Buscar tópicos (ex: flexbox, heurísticas, bayes)..." aria-label="Buscar conteúdo">
+        </div>
+        <div class="user-area">
+            <span class="greeting" id="greetingDisplay"></span>
+            <span id="badgeContainer" style="display:flex;gap:4px;"></span>
+            <span class="points-badge" id="pointsDisplay"><i class="fas fa-star"></i> 0 pts</span>
+            <span class="streak-badge" id="streakDisplay"><i class="fas fa-fire"></i> 0 dias</span>
+            <button class="btn-icon" id="btnTheme" title="Alternar tema claro/escuro" aria-label="Alternar tema"><i class="fas fa-moon"></i></button>
+        </div>
+    </div>
+
+    <!-- HERO com cadastro -->
+    <div class="hero">
+        <h1><i class="fas fa-graduation-cap"></i> ESTUDO DIRIGIDO</h1>
+        <p class="subtitle">HTML5 · CSS3 · JavaScript · Matemática Computacional · IHC — Conteúdo completo com exemplos do dia a dia</p>
+        <div class="status-bar">
+            <span class="status-item"><span class="status-dot"></span> Sistema ativo</span>
+            <span class="status-item"><i class="fas fa-clock"></i> <span id="lastAccess">Último acesso: agora</span></span>
+            <span class="status-item"><i class="fas fa-check-circle"></i> <span id="modulesDone">0/6 módulos</span></span>
+        </div>
+        <div class="user-name-input">
+            <input type="text" id="userNameInput" placeholder="Digite seu nome para começar" aria-label="Seu nome">
+            <button class="btn-small" id="btnSaveName">Cadastrar</button>
+        </div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div class="roadmap-label">🧭 Sua trilha de aprendizado</div>
+    <div class="roadmap" id="roadmap">
+        <div class="roadmap-step" data-page="html" tabindex="0"><div class="circle"><i class="fab fa-html5"></i></div><span class="label">HTML5</span></div>
+        <div class="roadmap-connector" id="conn1"></div>
+        <div class="roadmap-step" data-page="css" tabindex="0"><div class="circle"><i class="fab fa-css3-alt"></i></div><span class="label">CSS3</span></div>
+        <div class="roadmap-connector" id="conn2"></div>
+        <div class="roadmap-step" data-page="javascript" tabindex="0"><div class="circle"><i class="fab fa-js"></i></div><span class="label">JavaScript</span></div>
+        <div class="roadmap-connector" id="conn3"></div>
+        <div class="roadmap-step" data-page="matematica" tabindex="0"><div class="circle"><i class="fas fa-square-root-alt"></i></div><span class="label">Matemática</span></div>
+        <div class="roadmap-connector" id="conn4"></div>
+        <div class="roadmap-step" data-page="ihc" tabindex="0"><div class="circle"><i class="fas fa-user-friends"></i></div><span class="label">IHC</span></div>
+        <div class="roadmap-connector" id="conn5"></div>
+        <div class="roadmap-step" data-page="quiz" tabindex="0"><div class="circle"><i class="fas fa-trophy"></i></div><span class="label">Quiz</span></div>
+    </div>
+
+    <!-- PÁGINA PRINCIPAL -->
+    <div id="mainPage">
+        <div class="card-section-title">📚 Módulos — clique para acessar</div>
+        <div class="button-grid" id="cardGrid">
+            <!-- HTML Card -->
+            <div class="topic-card html-card" data-page="html" tabindex="0" data-keywords="html semântica formulários acessibilidade seo meta viewport">
+                <div class="card-accent"></div>
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Concluído</span>
+                <div class="card-header"><i class="fab fa-html5"></i><h3>HTML5</h3></div>
+                <div class="info-preview">
+                    <strong>📄 Estrutura semântica e SEO</strong>
+                    <ul><li>Tags semânticas, formulários modernos, meta tags, Open Graph</li></ul>
+                    <strong>💡 Cotidiano:</strong> Como o Google entende seu site e leitores de tela ajudam deficientes visuais
+                </div>
+                <div class="card-meta"><span><i class="fas fa-clock"></i> ~25 min</span><span><i class="fas fa-layer-group"></i> 8 tópicos</span></div>
+                <button class="btn-action">🔍 Acessar módulo →</button>
+            </div>
+            <!-- CSS Card -->
+            <div class="topic-card css-card" data-page="css" tabindex="0" data-keywords="css flexbox grid animações container queries especificidade">
+                <div class="card-accent"></div>
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Concluído</span>
+                <div class="card-header"><i class="fab fa-css3-alt"></i><h3>CSS3</h3></div>
+                <div class="info-preview">
+                    <strong>🎨 Layouts modernos e animações</strong>
+                    <ul><li>Flexbox, Grid, Container Queries, @keyframes, variáveis CSS</li></ul>
+                    <strong>💡 Cotidiano:</strong> O mesmo CSS que alinha o botão "Comprar" organiza os posts do Instagram
+                </div>
+                <div class="card-meta"><span><i class="fas fa-clock"></i> ~25 min</span><span><i class="fas fa-layer-group"></i> 8 tópicos</span></div>
+                <button class="btn-action">🎨 Explorar estilos →</button>
+            </div>
+            <!-- JavaScript Card -->
+            <div class="topic-card js-card" data-page="javascript" tabindex="0" data-keywords="javascript js variáveis funções dom eventos assíncrono promessas">
+                <div class="card-accent"></div>
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Concluído</span>
+                <div class="card-header"><i class="fab fa-js"></i><h3>JavaScript</h3></div>
+                <div class="info-preview">
+                    <strong>📜 Interatividade na web</strong>
+                    <ul><li>Variáveis, funções, manipulação do DOM, eventos, async/await</li></ul>
+                    <strong>💡 Cotidiano:</strong> O carrinho de compras que atualiza sem recarregar a página usa JS
+                </div>
+                <div class="card-meta"><span><i class="fas fa-clock"></i> ~30 min</span><span><i class="fas fa-layer-group"></i> 7 tópicos</span></div>
+                <button class="btn-action">📜 Aprender JS →</button>
+            </div>
+            <!-- Matemática Card -->
+            <div class="topic-card math-card" data-page="matematica" tabindex="0" data-keywords="matemática lógica grafos complexidade probabilidade karnaugh booleana bayes">
+                <div class="card-accent"></div>
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Concluído</span>
+                <div class="card-header"><i class="fas fa-square-root-alt"></i><h3>Matemática Computacional</h3></div>
+                <div class="info-preview">
+                    <strong>🧠 Lógica, probabilidade e grafos</strong>
+                    <ul><li>Conectivos lógicos, De Morgan, Mapa de Karnaugh, Bayes, Big O</li></ul>
+                    <strong>💡 Cotidiano:</strong> O GPS usa grafos. O Spotify usa probabilidade. O Google usa lógica booleana.
+                </div>
+                <div class="card-meta"><span><i class="fas fa-clock"></i> ~30 min</span><span><i class="fas fa-layer-group"></i> 7 tópicos</span></div>
+                <button class="btn-action">📐 Ver fundamentos →</button>
+            </div>
+            <!-- IHC Card -->
+            <div class="topic-card ihc-card" data-page="ihc" tabindex="0" data-keywords="ihc usabilidade nielsen leis ux design thinking personas métricas heart sus">
+                <div class="card-accent"></div>
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Concluído</span>
+                <div class="card-header"><i class="fas fa-user-friends"></i><h3>IHC / UX</h3></div>
+                <div class="info-preview">
+                    <strong>🤝 Design centrado no usuário</strong>
+                    <ul><li>10 Heurísticas de Nielsen, Leis de UX, Design Thinking, métricas HEART</li></ul>
+                    <strong>💡 Cotidiano:</strong> Por que o botão da Amazon é grande e amarelo? A Lei de Fitts explica.
+                </div>
+                <div class="card-meta"><span><i class="fas fa-clock"></i> ~25 min</span><span><i class="fas fa-layer-group"></i> 8 tópicos</span></div>
+                <button class="btn-action">🤝 Aprofundar em IHC →</button>
+            </div>
+            <!-- Quiz Card -->
+            <div class="topic-card quiz-card" data-page="quiz" tabindex="0" data-keywords="quiz teste avaliação geral certificado">
+                <div class="card-accent"></div>
+                <span class="completed-badge"><i class="fas fa-check-circle"></i> Concluído</span>
+                <div class="card-header"><i class="fas fa-trophy"></i><h3>Quiz Geral</h3></div>
+                <div class="info-preview">
+                    <strong>🧪 Teste completo e gamificado</strong>
+                    <ul><li>15 questões aleatórias de todos os módulos, certificado ao atingir 75%</li></ul>
+                    <strong>💡 Dica:</strong> Estude todos os módulos antes para garantir seu certificado!
+                </div>
+                <div class="card-meta"><span><i class="fas fa-clock"></i> ~15 min</span><span><i class="fas fa-question-circle"></i> 15 questões</span></div>
+                <button class="btn-action">📝 Fazer o quiz →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== PÁGINAS DE CONTEÚDO COMPLETAS ========== -->
+    <!-- HTML -->
+    <div id="htmlPage" class="page-container">
+        <div class="page-header"><h2><i class="fab fa-html5" style="color:#e34c26;"></i> HTML5</h2><button class="back-btn" data-back="main"><i class="fas fa-arrow-left"></i> Voltar</button></div>
+        <div class="trail"><a href="#html-intro">Introdução</a><a href="#html-semantica">Semântica</a><a href="#html-meta">Meta & SEO</a><a href="#html-formularios">Formulários</a><a href="#html-atributos">Atributos</a><a href="#html-midia">Mídia</a><a href="#html-perf">Performance</a><a href="#html-acessibilidade">Acessibilidade</a><a href="#html-desafio">Desafio</a><a href="#html-editor">Praticar</a></div>
+        <div class="content-section">
+            <h2 id="html-intro">📖 O que é HTML5?</h2>
+            <p>HTML (HyperText Markup Language) é a <strong>linguagem de marcação</strong> que estrutura todo o conteúdo da web. Toda página que você visita — Google, YouTube, Instagram — é construída com HTML.</p>
+            <div class="analogy-box"><strong>💡 Analogia do cotidiano:</strong> Se um site fosse uma casa, o HTML seriam as <strong>paredes, portas e janelas</strong> — a estrutura física. O CSS seria a <strong>pintura, decoração e móveis</strong>. O JavaScript seria a <strong>eletricidade e automação</strong>.</div>
+
+            <h2 id="html-semantica">🏷️ Semântica</h2>
+            <p>Tags semânticas <strong>descrevem o propósito</strong> do conteúdo. Em vez de usar <code>&lt;div&gt;</code> para tudo, usamos tags que dizem o que cada parte <strong>significa</strong>.</p>
+            <div class="analogy-box"><strong>💡 Exemplo:</strong> Imagine uma biblioteca onde todos os livros estão em caixas iguais sem etiqueta — impossível achar nada. Tags semânticas são como <strong>etiquetas nas prateleiras</strong>: "Ficção", "Ciência", "História".</div>
+            <pre>&lt;body&gt;
+  &lt;header&gt;...&lt;/header&gt;
+  &lt;nav&gt;...&lt;/nav&gt;
+  &lt;main&gt;
+    &lt;article&gt;
+      &lt;h1&gt;Título&lt;/h1&gt;
+      &lt;section&gt;...&lt;/section&gt;
+      &lt;aside&gt;...&lt;/aside&gt;
+    &lt;/article&gt;
+  &lt;/main&gt;
+  &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;</pre>
+            <table>
+                <tr><th>Tag</th><th>Quando usar</th><th>Exemplo do cotidiano</th></tr>
+                <tr><td><code>&lt;article&gt;</code></td><td>Conteúdo autossuficiente</td><td>Um post de blog, um tweet, um card de produto</td></tr>
+                <tr><td><code>&lt;section&gt;</code></td><td>Agrupamento temático</td><td>Capítulo de um livro, seção "Esportes" no jornal</td></tr>
+                <tr><td><code>&lt;aside&gt;</code></td><td>Conteúdo tangencial</td><td>Barra lateral com "Leia também"</td></tr>
+                <tr><td><code>&lt;time&gt;</code></td><td>Data/hora legível por máquina</td><td>Data de publicação de uma notícia</td></tr>
+            </table>
+
+            <h2 id="html-meta">🔍 Meta Tags e SEO</h2>
+            <p>Meta tags são instruções no <code>&lt;head&gt;</code> que controlam como a página aparece nos buscadores e redes sociais.</p>
+            <div class="analogy-box"><strong>💡 Exemplo:</strong> Quando você compartilha um link no WhatsApp e aparece uma imagem com título, isso é a meta tag <strong>Open Graph</strong> funcionando. Sem ela, o link aparece "pelado".</div>
+            <pre>&lt;meta name="description" content="Guia completo de HTML5"&gt;
+&lt;meta property="og:title" content="Estudo Dirigido - HTML5"&gt;
+&lt;meta property="og:image" content="https://exemplo.com/capa.jpg"&gt;</pre>
+
+            <h2 id="html-formularios">📋 Formulários</h2>
+            <table>
+                <tr><th>Tipo</th><th>Para que serve</th><th>Exemplo do cotidiano</th></tr>
+                <tr><td><code>email</code></td><td>E-mail (teclado com @)</td><td>Campo de login, newsletter</td></tr>
+                <tr><td><code>tel</code></td><td>Telefone (teclado numérico)</td><td>Cadastro em delivery</td></tr>
+                <tr><td><code>date</code></td><td>Data (calendário nativo)</td><td>Reserva de hotel</td></tr>
+                <tr><td><code>number</code></td><td>Números com setas</td><td>Quantidade no carrinho</td></tr>
+                <tr><td><code>color</code></td><td>Seletor de cor</td><td>Personalização de camiseta</td></tr>
+                <tr><td><code>range</code></td><td>Slider de valor</td><td>Filtro de preço em loja virtual</td></tr>
+            </table>
+            <pre>&lt;form&gt;
+  &lt;label for="email"&gt;E-mail:&lt;/label&gt;
+  &lt;input type="email" id="email" required placeholder="seu@email.com"&gt;
+  &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+            <h2 id="html-atributos">🔖 Atributos Globais</h2>
+            <table>
+                <tr><th>Atributo</th><th>Função</th><th>Uso cotidiano</th></tr>
+                <tr><td><code>contenteditable="true"</code></td><td>Elemento editável</td><td>Bloco de notas online</td></tr>
+                <tr><td><code>hidden</code></td><td>Esconde elemento</td><td>Mensagem de erro condicional</td></tr>
+                <tr><td><code>data-*</code></td><td>Armazena dados</td><td>ID do produto no botão "Comprar"</td></tr>
+                <tr><td><code>tabindex="0"</code></td><td>Navegação por Tab</td><td>Acessibilidade sem mouse</td></tr>
+            </table>
+
+            <h2 id="html-midia">🧩 Mídia e Interativos</h2>
+            <pre>&lt;picture&gt;
+  &lt;source media="(min-width:800px)" srcset="foto-grande.jpg"&gt;
+  &lt;img src="foto-pequena.jpg" alt="Descrição" loading="lazy"&gt;
+&lt;/picture&gt;
+
+&lt;details&gt;
+  &lt;summary&gt;Pergunta frequente: Qual o prazo de entrega?&lt;/summary&gt;
+  &lt;p&gt;5 a 10 dias úteis.&lt;/p&gt;
+&lt;/details&gt;</pre>
+            <div class="analogy-box"><strong>💡 Exemplo:</strong> O accordion acima é igual à seção de "Perguntas Frequentes" de qualquer loja virtual. Clicou, a resposta aparece. Tudo com HTML puro!</div>
+
+            <h2 id="html-perf">🚀 Performance</h2>
+            <ul>
+                <li><code>loading="lazy"</code>: imagens só carregam quando aparecem na tela (como feed do Instagram).</li>
+                <li><code>&lt;script defer&gt;</code>: JavaScript espera o HTML carregar primeiro.</li>
+            </ul>
+
+            <h2 id="html-acessibilidade">♿ Acessibilidade (WCAG)</h2>
+            <p>Princípios <strong>POUR</strong>: <strong>P</strong>erceptível, <strong>O</strong>perável, <strong>U</strong>nderstandable (Compreensível), <strong>R</strong>obusto.</p>
+            <div class="analogy-box"><strong>💡 Exemplo:</strong> Acessibilidade na web é como <strong>rampa de acesso</strong> em prédios. Não ajuda só cadeirantes — ajuda também quem está com carrinho de bebê, bicicleta ou mala pesada.</div>
+
+            <div class="challenge-box" id="html-desafio">
+                <h3>🛠️ Desafio prático</h3>
+                <p>Crie um formulário de contato com nome, e-mail (com validação) e área de mensagem. Use <code>required</code> e <code>placeholder</code>.</p>
+                <details><summary>Ver dica</summary><p>Use <code>&lt;input type="email" required&gt;</code> para o e-mail.</p></details>
+            </div>
+
+            <h2 id="html-editor">🛠️ Pratique HTML</h2>
+            <div class="live-editor">
+                <textarea id="htmlEditor"><h1>Meu Formulário</h1>
+<form>
+  <label>Nome: <input type="text" required></label><br>
+  <label>E-mail: <input type="email" required></label><br>
+  <button type="submit">Enviar</button>
+</form></textarea>
+                <iframe id="htmlPreview" title="Pré-visualização HTML"></iframe>
+            </div>
+            <button class="btn-check" id="btnRunHtml">▶️ Atualizar visualização</button>
+        </div>
+    </div>
+
+    <!-- CSS -->
+    <div id="cssPage" class="page-container">
+        <div class="page-header"><h2><i class="fab fa-css3-alt" style="color:#2965f1;"></i> CSS3</h2><button class="back-btn" data-back="main"><i class="fas fa-arrow-left"></i> Voltar</button></div>
+        <div class="trail"><a href="#css-intro">Introdução</a><a href="#css-especificidade">Especificidade</a><a href="#css-grid">Grid</a><a href="#css-flexbox">Flexbox</a><a href="#css-container">Container Queries</a><a href="#css-animacoes">Animações</a><a href="#css-funcoes">Funções CSS</a><a href="#css-metodologia">BEM</a><a href="#css-desafio">Desafio</a><a href="#css-editor">Praticar</a></div>
+        <div class="content-section">
+            <h2 id="css-intro">📖 O que é CSS3?</h2>
+            <p>CSS (Cascading Style Sheets) define a <strong>aparência visual</strong> do HTML.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> HTML = planta da casa. CSS = <strong>design de interiores</strong> (cor das paredes, móveis, cortinas). Um mesmo HTML pode ter infinitos "looks" diferentes com CSS.</div>
+
+            <h2 id="css-especificidade">🎯 Especificidade e Cascata</h2>
+            <p>A <strong>cascata</strong> decide qual regra CSS "ganha" quando há conflito. A <strong>especificidade</strong> é um peso calculado.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Especificidade é como <strong>fila de prioridade</strong>: idoso (ID) passa na frente, cliente premium (classe) depois, cliente normal (tag) por último. <code>!important</code> é furar a fila!</div>
+            <pre>p { color: black; }           /* Peso (0,0,1) */
+p.destaque { color: blue; }   /* Peso (0,1,1) — VENCE */
+#titulo { color: red; }       /* Peso (1,0,0) — VENCE MAIS */</pre>
+
+            <h2 id="css-grid">📐 Grid Layout</h2>
+            <p>Sistema <strong>bidimensional</strong> (linhas E colunas) para layouts complexos.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Grid é como uma <strong>planta de revista</strong>: define quantas colunas, onde fica o título, a foto, o texto. Tudo se encaixa mesmo se o tamanho da página mudar.</div>
+            <pre>.pagina {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  grid-template-areas:
+    "cabecalho cabecalho cabecalho"
+    "sidebar   principal  aside"
+    "rodape    rodape     rodape";
+}</pre>
+
+            <h2 id="css-flexbox">🧩 Flexbox</h2>
+            <p>Alinhamento <strong>unidimensional</strong> (linha OU coluna).</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Flexbox é como <strong>prateleiras ajustáveis</strong>. Você decide o espaço entre os itens, se espalham igualmente ou agrupam no centro.</div>
+            <table>
+                <tr><th>Propriedade</th><th>O que faz</th><th>Uso cotidiano</th></tr>
+                <tr><td><code>justify-content: space-between</code></td><td>Espaço igual entre itens</td><td>Menu distribuído</td></tr>
+                <tr><td><code>align-items: center</code></td><td>Centraliza verticalmente</td><td>Ícone alinhado com texto</td></tr>
+                <tr><td><code>flex-wrap: wrap</code></td><td>Quebra para linha seguinte</td><td>Galeria de fotos</td></tr>
+                <tr><td><code>gap: 1rem</code></td><td>Espaçamento uniforme</td><td>Cards de produto</td></tr>
+            </table>
+
+            <h2 id="css-container">📦 Container Queries</h2>
+            <p>Estiliza baseado no <strong>tamanho do container pai</strong>, não da tela.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Media Queries = termostato que mede a temperatura da <strong>cidade inteira</strong>. Container Queries = mede a temperatura <strong>dentro de cada cômodo</strong>.</div>
+            <pre>.card-wrapper { container-type: inline-size; }
+@container (min-width: 400px) {
+  .card { display: grid; grid-template-columns: 1fr 1fr; }
+}</pre>
+
+            <h2 id="css-animacoes">✨ Animações</h2>
+            <pre>.botao {
+  transition: transform 0.3s ease;
+}
+.botao:hover { transform: scale(1.05); }
+
+@keyframes flutuar {
+  0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}
+}
+.icone { animation: flutuar 2s ease-in-out infinite; }</pre>
+            <div class="analogy-box"><strong>💡 Exemplo:</strong> O botão "Curtir" do Instagram que aumenta e solta corações usa animações CSS. O menu que desliza suavemente também.</div>
+
+            <h2 id="css-funcoes">🔧 Funções CSS Modernas</h2>
+            <pre>font-size: clamp(1rem, 2.5vw, 2rem); /* Mín 1rem, pref 2.5vw, máx 2rem */
+width: min(100%, 800px);              /* No máximo 800px */
+width: calc(100% - 2rem);             /* Largura total menos 2rem */</pre>
+
+            <h2 id="css-metodologia">📏 Metodologia BEM</h2>
+            <p>BEM (Bloco, Elemento, Modificador): convenção para nomear classes de forma clara.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> BEM é como <strong>etiquetar caixas na mudança</strong>: "Cozinha — Pratos", "Quarto — Roupas de Inverno". Qualquer pessoa entende o que é cada caixa sem abrir.</div>
+            <pre>.menu { }              /* Bloco */
+.menu__item { }        /* Elemento */
+.menu--dark { }        /* Modificador */</pre>
+
+            <div class="challenge-box" id="css-desafio">
+                <h3>🛠️ Desafio prático</h3>
+                <p>Crie 3 cards lado a lado que, ao passar o mouse, cresçam levemente e mudem de cor.</p>
+                <details><summary>Ver dica</summary><p>Use <code>display:flex; gap:1rem;</code> no container e <code>transition: transform 0.3s;</code> nos cards.</p></details>
+            </div>
+
+            <h2 id="css-editor">🛠️ Pratique CSS</h2>
+            <div class="live-editor">
+                <textarea id="cssHtmlEditor"><div class="cards">
+  <div class="card">Card 1</div>
+  <div class="card">Card 2</div>
+  <div class="card">Card 3</div>
+</div></textarea>
+                <textarea id="cssEditor">.cards { display:flex; gap:1rem; }
+.card { background:#1e293b; color:white; padding:1rem; border-radius:8px; transition:0.3s; }
+.card:hover { transform:scale(1.05); background:#3b82f6; }</textarea>
+                <iframe id="cssPreview"></iframe>
+            </div>
+            <button class="btn-check" id="btnRunCss">▶️ Atualizar</button>
+        </div>
+    </div>
+    <!-- JavaScript -->
+    <div id="javascriptPage" class="page-container">
+        <div class="page-header"><h2><i class="fab fa-js" style="color:#f7df1e;"></i> JavaScript</h2><button class="back-btn" data-back="main"><i class="fas fa-arrow-left"></i> Voltar</button></div>
+        <div class="trail"><a href="#js-intro">Introdução</a><a href="#js-variaveis">Variáveis</a><a href="#js-funcoes">Funções</a><a href="#js-dom">DOM</a><a href="#js-eventos">Eventos</a><a href="#js-assincrono">Assíncrono</a><a href="#js-modulos">Módulos</a><a href="#js-desafio">Desafio</a><a href="#js-editor">Praticar</a></div>
+        <div class="content-section">
+            <h2 id="js-intro">📖 O que é JavaScript?</h2>
+            <p>JavaScript é a linguagem que traz <strong>interatividade</strong> para páginas web.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> HTML = corpo humano (estrutura). CSS = roupas (aparência). JavaScript = <strong>cérebro e músculos</strong> (decisões e ações). Quando você clica em "Curtir" e o coração fica vermelho sem recarregar, é JS.</div>
+
+            <h2 id="js-variaveis">📦 Variáveis e Tipos</h2>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> <code>let</code> é como um <strong>post-it</strong>: pode trocar. <code>const</code> é como uma <strong>tatuagem</strong>: não muda. Use <code>const</code> sempre que possível.</div>
+            <pre>let nome = "Maria";        // String
+const idade = 25;          // Number
+let ativo = true;           // Boolean
+let frutas = ["maçã","banana"]; // Array
+let pessoa = {nome:"João", idade:30}; // Objeto
+
+// Exemplo do carrinho de compras:
+let carrinho = [];
+carrinho.push("Camiseta");
+console.log(carrinho.length); // 1</pre>
+
+            <h2 id="js-funcoes">🔧 Funções</h2>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Função é como uma <strong>receita culinária</strong>: ingredientes (parâmetros) → passos (código) → prato pronto (retorno). Use a mesma receita infinitas vezes.</div>
+            <pre>function calcularDesconto(preco, percentual) {
+  return preco - (preco * percentual / 100);
+}
+console.log(calcularDesconto(100, 20)); // 80
+
+// Arrow function
+const soma = (a, b) => a + b;</pre>
+
+            <h2 id="js-dom">🌐 Manipulação do DOM</h2>
+            <p>DOM (Document Object Model) é a página como <strong>árvore de objetos</strong> que o JS pode modificar.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> O DOM é como o <strong>mapa de uma cidade</strong>. Cada prédio é um elemento. Com JS, você pinta prédios, demole casas ou constrói novos parques.</div>
+            <pre>const titulo = document.querySelector('h1');
+titulo.textContent = 'Novo Título';
+titulo.style.color = 'blue';
+
+const item = document.createElement('li');
+item.textContent = 'Produto adicionado';
+document.querySelector('ul').appendChild(item);</pre>
+
+            <h2 id="js-eventos">🖱️ Eventos</h2>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Eventos são como <strong>campainhas</strong>. Cada botão (clique, tecla) toca uma campainha diferente, e você decide o que acontece.</div>
+            <pre>const botao = document.querySelector('#comprar');
+botao.addEventListener('click', () => {
+  alert('Produto adicionado ao carrinho! 🛒');
+});</pre>
+
+            <h2 id="js-assincrono">⏳ Programação Assíncrona</h2>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> É como <strong>pedir um delivery</strong>. Você faz o pedido (fetch) e continua vendo TV. Quando o lanche chega (Promise resolve), você come (processa).</div>
+            <pre>async function buscarClima(cidade) {
+  try {
+    const resposta = await fetch(`https://api.clima.com/${cidade}`);
+    const dados = await resposta.json();
+    console.log(`${dados.temp}°C em ${cidade}`);
+  } catch (erro) {
+    console.error('Erro:', erro);
+  }
+}</pre>
+
+            <h2 id="js-modulos">📦 Módulos ES6</h2>
+            <pre>// arquivo calculadora.js
+export function soma(a,b) { return a+b; }
+export const PI = 3.14159;
+
+// arquivo main.js
+import { soma, PI } from './calculadora.js';
+console.log(soma(2,3)); // 5</pre>
+
+            <div class="challenge-box" id="js-desafio">
+                <h3>🛠️ Desafio prático</h3>
+                <p>Crie um botão que, ao ser clicado, mostre um alerta com a mensagem "Você clicou!".</p>
+                <details><summary>Ver dica</summary><p><code>document.querySelector('button').addEventListener('click', () => alert('Você clicou!'))</code></p></details>
+            </div>
+
+            <h2 id="js-editor">🛠️ Pratique JS</h2>
+            <div class="live-editor">
+                <textarea id="jsEditor">let nome = "Visitante";
+console.log("Bem-vindo, " + nome + "!");</textarea>
+                <textarea id="jsOutput" readonly style="background:#0b1120;color:#86efac;">Console aparecerá aqui...</textarea>
+            </div>
+            <button class="btn-check" id="btnRunJs">▶️ Executar JavaScript</button>
+        </div>
+    </div>
+
+    <!-- Matemática -->
+    <div id="matematicaPage" class="page-container">
+        <div class="page-header"><h2><i class="fas fa-square-root-alt" style="color:#a855f7;"></i> Matemática Computacional</h2><button class="back-btn" data-back="main"><i class="fas fa-arrow-left"></i> Voltar</button></div>
+        <div class="trail"><a href="#mat-intro">Introdução</a><a href="#mat-logica">Lógica</a><a href="#mat-booleana">Booleana</a><a href="#mat-karnaugh">Karnaugh</a><a href="#mat-probabilidade">Probabilidade</a><a href="#mat-grafos">Grafos</a><a href="#mat-complexidade">Complexidade</a></div>
+        <div class="content-section">
+            <h2 id="mat-intro">📖 Por que matemática na computação?</h2>
+            <span class="img-emoji">🧮💻🧠</span>
+            <p>A matemática computacional é a base para projetar algoritmos eficientes, provar que funcionam e medir seu desempenho.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Matemática computacional para o programador é como <strong>anatomia para o médico</strong>. Você pode operar sem conhecer anatomia? Pode, mas os resultados serão desastrosos.</div>
+
+            <h2 id="mat-logica">🧠 Lógica Proposicional</h2>
+            <p>Proposições são afirmações com valor <strong>Verdadeiro (V)</strong> ou <strong>Falso (F)</strong>.</p>
+            <div class="analogy-box"><strong>💡 Exemplo do cotidiano:</strong> "Se <strong>chover</strong> E <strong>eu tiver tempo</strong>, vou ao cinema." Isso é <code>p ∧ q → r</code>. Todo <code>if</code> no seu código usa lógica proposicional.</div>
+            <table>
+                <tr><th>Símbolo</th><th>Nome</th><th>Significado</th><th>Exemplo cotidiano</th></tr>
+                <tr><td>∧</td><td>E (AND)</td><td>Ambos verdadeiros</td><td>"Tem leite E café" — só é verdade se os dois existirem</td></tr>
+                <tr><td>∨</td><td>OU (OR)</td><td>Pelo menos um</td><td>"Pago com cartão OU dinheiro"</td></tr>
+                <tr><td>¬</td><td>NÃO (NOT)</td><td>Inverte</td><td>"NÃO está chovendo"</td></tr>
+                <tr><td>→</td><td>IMPLICA</td><td>Se p então q</td><td>"Se passar no teste → contratado"</td></tr>
+                <tr><td>⊕</td><td>XOR</td><td>Apenas um</td><td>"Ou sorvete OU bolo" (não ambos)</td></tr>
+            </table>
+            <p><strong>Leis de De Morgan:</strong></p>
+            <pre>¬(p ∧ q) ≡ ¬p ∨ ¬q   // "Não (choveu E fez sol)" = "Não choveu OU não fez sol"
+¬(p ∨ q) ≡ ¬p ∧ ¬q   // "Não (tem bolo OU torta)" = "Não tem bolo E não tem torta"</pre>
+
+            <h2 id="mat-booleana">🔢 Álgebra Booleana e Simplificações</h2>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Simplificar uma expressão booleana é como <strong>encurtar uma frase longa</strong>. "Vou sair se (tiver dinheiro E for sábado) OU (tiver dinheiro E NÃO for sábado)" → "Vou sair se tiver dinheiro".</div>
+            <pre>Simplificação: (A ∧ B) ∨ (A ∧ ¬B) = A ∧ (B ∨ ¬B) = A ∧ 1 = A</pre>
+            <table>
+                <tr><th>Lei</th><th>Fórmula</th></tr>
+                <tr><td>Identidade</td><td>A ∧ 1 = A; A ∨ 0 = A</td></tr>
+                <tr><td>Complemento</td><td>A ∧ ¬A = 0; A ∨ ¬A = 1</td></tr>
+                <tr><td>Absorção</td><td>A ∨ (A ∧ B) = A</td></tr>
+                <tr><td>Distributiva</td><td>A∧(B∨C) = (A∧B)∨(A∧C)</td></tr>
+            </table>
+
+            <h2 id="mat-karnaugh">🗺️ Mapa de Karnaugh</h2>
+            <span class="img-emoji">🗺️📐</span>
+            <p>Ferramenta visual para simplificar expressões booleanas de 2 a 6 variáveis.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> O Mapa K é como <strong>jogar Batalha Naval com lógica</strong>. Marque os '1's (navios) e agrupe em blocos. Cada bloco vira uma expressão simplificada.</div>
+            <table class="karnaugh-table">
+                <tr><th>AB\C</th><th>0</th><th>1</th></tr>
+                <tr><td><strong>00</strong></td><td>0</td><td>0</td></tr>
+                <tr><td><strong>01</strong></td><td>0</td><td style="background:#7f1d1d;">1</td></tr>
+                <tr><td><strong>11</strong></td><td style="background:#7f1d1d;">1</td><td style="background:#7f1d1d;">1</td></tr>
+                <tr><td><strong>10</strong></td><td>0</td><td style="background:#7f1d1d;">1</td></tr>
+            </table>
+            <p>Agrupando os 4 '1's da direita → <strong>B</strong> (A e C variam, B=1 sempre).</p>
+
+            <h2 id="mat-probabilidade">🎲 Probabilidade</h2>
+            <span class="img-emoji">🎲📊🎯</span>
+            <p><strong>P(A) = Casos favoráveis / Casos possíveis.</strong> Ex: dado de 6 faces, P(tirar 3) = 1/6 ≈ 16,7%.</p>
+            <h3>Teorema de Bayes</h3>
+            <pre>P(A|B) = [P(B|A) × P(A)] / P(B)</pre>
+            <div class="analogy-box"><strong>💡 Exemplo real:</strong> Seu e-mail usa Bayes para decidir se uma mensagem é spam. Palavras como "grátis" e "clique aqui" aumentam a probabilidade. O filtro aprende com cada e-mail que você marca.</div>
+            <h3>Distribuição Binomial</h3>
+            <p>Probabilidade de exatamente k sucessos em n tentativas. Ex: 5 lançamentos de moeda, probabilidade de 3 caras = 31,25%.</p>
+
+            <h2 id="mat-grafos">📊 Grafos</h2>
+            <span class="img-emoji">🕸️🔗📍</span>
+            <p>Grafos modelam conexões: redes sociais, rotas de GPS, dependências.</p>
+            <div class="analogy-box"><strong>💡 Exemplos do cotidiano:</strong> <strong>GPS (Waze):</strong> acha a rota mais curta com BFS. <strong>Instagram:</strong> sugere amigos por grafos de conexões. <strong>Netflix:</strong> recomenda filmes baseado no que usuários similares assistiram.</div>
+            <ul>
+                <li><strong>BFS:</strong> Fila, explora nível por nível, caminho mais curto.</li>
+                <li><strong>DFS:</strong> Pilha/recursão, vai fundo antes de voltar.</li>
+            </ul>
+
+            <h2 id="mat-complexidade">⏱️ Complexidade (Big O)</h2>
+            <span class="img-emoji">📈⏱️🚀</span>
+            <p>Mede como o algoritmo <strong>escala</strong> com mais dados.</p>
+            <table>
+                <tr><th>Notação</th><th>Nome</th><th>Analogia do cotidiano</th></tr>
+                <tr><td>O(1)</td><td>Constante</td><td>Achar contato pelo número exato</td></tr>
+                <tr><td>O(log n)</td><td>Logarítmica</td><td>Procurar palavra no dicionário (abre no meio)</td></tr>
+                <tr><td>O(n)</td><td>Linear</td><td>Folhear todas as páginas da agenda</td></tr>
+                <tr><td>O(n²)</td><td>Quadrática</td><td>Cada convidado cumprimenta todos os outros</td></tr>
+                <tr><td>O(2ⁿ)</td><td>Exponencial</td><td>Dobrar a cada novo elemento</td></tr>
+            </table>
+        </div>
+    </div>
+    <!-- IHC -->
+    <div id="ihcPage" class="page-container">
+        <div class="page-header"><h2><i class="fas fa-user-friends" style="color:#10b981;"></i> IHC / UX</h2><button class="back-btn" data-back="main"><i class="fas fa-arrow-left"></i> Voltar</button></div>
+        <div class="trail"><a href="#ihc-intro">Introdução</a><a href="#ihc-heuristicas">Heurísticas</a><a href="#ihc-leis">Leis de UX</a><a href="#ihc-design-thinking">Design Thinking</a><a href="#ihc-personas">Personas</a><a href="#ihc-testes">Testes</a><a href="#ihc-metricas">Métricas</a><a href="#ihc-wcag">WCAG</a></div>
+        <div class="content-section">
+            <h2 id="ihc-intro">📖 O que é IHC/UX?</h2>
+            <span class="img-emoji">👤💻❤️</span>
+            <p>IHC (Interação Humano-Computador) projeta sistemas <strong>úteis, fáceis de usar e agradáveis</strong>. UX (User Experience) amplia para toda a jornada do usuário.</p>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Uma <strong>porta que tem puxador mas só abre empurrando</strong> é o clássico problema de IHC. O design deve "conversar" com o usuário, não confundi-lo.</div>
+
+            <h2 id="ihc-heuristicas">📌 10 Heurísticas de Nielsen (com exemplos do dia a dia)</h2>
+            <ol>
+                <li><strong>Visibilidade do status:</strong> O sistema informa o que está acontecendo. <em>Ex: barra de progresso no Uber mostrando onde o motorista está.</em></li>
+                <li><strong>Correspondência com o mundo real:</strong> Use linguagem familiar. <em>Ex: ícone de lixeira para deletar.</em></li>
+                <li><strong>Controle e liberdade:</strong> Permitir desfazer. <em>Ex: botão "Desfazer envio" no Gmail.</em></li>
+                <li><strong>Consistência e padrões:</strong> Mesma terminologia. <em>Ex: ícone de disquete sempre significa salvar.</em></li>
+                <li><strong>Prevenção de erros:</strong> Evitar que erros aconteçam. <em>Ex: Google desabilita busca vazia.</em></li>
+                <li><strong>Reconhecimento em vez de memorização:</strong> Mostre opções. <em>Ex: Netflix mostra "Continuar assistindo".</em></li>
+                <li><strong>Flexibilidade e eficiência:</strong> Atalhos. <em>Ex: Ctrl+C / Ctrl+V.</em></li>
+                <li><strong>Estética minimalista:</strong> Evite irrelevância. <em>Ex: página inicial do Google.</em></li>
+                <li><strong>Ajude a reconhecer erros:</strong> Mensagens claras. <em>Ex: "Senha curta — use 8+ caracteres".</em></li>
+                <li><strong>Ajuda e documentação:</strong> Ajuda contextual. <em>Ex: ícone "?" ao lado de configurações complexas.</em></li>
+            </ol>
+
+            <h2 id="ihc-leis">📏 Leis de UX (com exemplos)</h2>
+            <div class="highlight-box">
+                <p><strong>Lei de Fitts:</strong> Tempo para clicar ∝ distância e tamanho do alvo. <em>Ex: botão "Comprar" da Amazon é grande e perto do preço.</em></p>
+                <p><strong>Lei de Hick:</strong> Mais opções = mais tempo para decidir. <em>Ex: cardápio enxuto = decisão rápida.</em></p>
+                <p><strong>Lei de Jakob:</strong> Usuários preferem padrões familiares. <em>Ex: carrinho sempre no canto superior direito.</em></p>
+                <p><strong>Lei de Miller:</strong> Retemos 7±2 itens. <em>Ex: telefone agrupado em blocos: 11 99999-8888.</em></p>
+                <p><strong>Lei de Tesler:</strong> Complexidade inerente não pode ser removida, só transferida. <em>Ex: busca avançada é complexa, mas o sistema deve lidar com isso.</em></p>
+            </div>
+
+            <h2 id="ihc-design-thinking">🎨 Design Thinking</h2>
+            <div class="analogy-box"><strong>💡 Analogia:</strong> Design Thinking é como <strong>cozinhar um prato novo</strong>: entenda os gostos (empatia), defina o cardápio (definição), pense em receitas (ideação), teste (protótipo) e sirva para provarem (teste).</div>
+            <ol>
+                <li><strong>Empatia:</strong> Entender profundamente o usuário.</li>
+                <li><strong>Definição:</strong> Sintetizar o problema.</li>
+                <li><strong>Ideação:</strong> Gerar ideias.</li>
+                <li><strong>Prototipação:</strong> Criar versões baratas e rápidas.</li>
+                <li><strong>Teste:</strong> Validar com usuários reais e iterar.</li>
+            </ol>
+
+            <h2 id="ihc-personas">👤 Personas e Jornada do Usuário</h2>
+            <p><strong>Persona:</strong> Representação fictícia do usuário ideal baseada em dados reais. Ex: "Maria, 34 anos, gerente, usa celular no metrô, odeia formulários longos."</p>
+            <p><strong>Mapa da Jornada:</strong> Visualização da experiência ao longo do tempo, destacando pontos de contato e emoções.</p>
+
+            <h2 id="ihc-testes">🧪 Testes de Usabilidade</h2>
+            <ul>
+                <li><strong>Think Aloud:</strong> Usuário verbaliza o que pensa enquanto usa o sistema.</li>
+                <li><strong>Teste A/B:</strong> Compara duas versões para ver qual performa melhor.</li>
+                <li><strong>Teste de 5 segundos:</strong> Mostra a tela por 5s e pergunta o que o usuário lembra.</li>
+                <li><strong>Card Sorting:</strong> Usuários organizam tópicos em categorias.</li>
+            </ul>
+
+            <h2 id="ihc-metricas">📊 Métricas HEART (Google)</h2>
+            <table>
+                <tr><th>Dimensão</th><th>Mede</th><th>Exemplo</th></tr>
+                <tr><td><strong>H</strong>appiness</td><td>Satisfação</td><td>Nota na loja de apps, NPS</td></tr>
+                <tr><td><strong>E</strong>ngagement</td><td>Engajamento</td><td>Tempo de uso diário</td></tr>
+                <tr><td><strong>A</strong>doption</td><td>Adoção</td><td>Novos cadastros em 30 dias</td></tr>
+                <tr><td><strong>R</strong>etention</td><td>Retenção</td><td>Usuários que voltam após 7 dias</td></tr>
+                <tr><td><strong>T</strong>ask Success</td><td>Sucesso na tarefa</td><td>% que conclui a compra</td></tr>
+            </table>
+
+            <h2 id="ihc-wcag">♿ Acessibilidade (WCAG 2.2)</h2>
+            <p>Princípios <strong>POUR</strong>: <strong>P</strong>erceptível (texto alternativo, legendas), <strong>O</strong>perável (teclado, foco visível), <strong>U</strong>nderstandable (texto claro, consistência), <strong>R</strong>obusto (compatível com leitores de tela).</p>
+        </div>
+    </div>
+    <!-- QUIZ GERAL -->
+    <div id="quizPage" class="page-container">
+        <div class="page-header"><h2><i class="fas fa-trophy" style="color:var(--warning);"></i> Quiz Geral</h2><button class="back-btn" data-back="main"><i class="fas fa-arrow-left"></i> Voltar</button></div>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">15 questões aleatórias de todos os 5 módulos. Atinga 75% para gerar seu certificado personalizado!</p>
+        <div class="quiz-section" id="quizContainer"></div>
+        <div class="quiz-score" id="quizScore" style="display:none;"></div>
+        <div style="text-align:center;"><button class="btn-cert" id="btnCertificate" style="display:none;"><i class="fas fa-certificate"></i> Gerar Certificado</button></div>
+    </div>
+</div>
+
+<script>
+(function(){
+    const SK='ed_progress',TK='ed_theme',PK='ed_points',STK='ed_streak',NK='ed_username',TM=6;
+    const badges=[{id:'b1',name:'Iniciante',icon:'🥉',min:50},{id:'b2',name:'Estudioso',icon:'🥈',min:150},{id:'b3',name:'Dedicado',icon:'🥇',min:300},{id:'b4',name:'Expert',icon:'🏅',min:500},{id:'b5',name:'Mestre',icon:'🏆',min:800}];
+    const allQ=[{id:'h1',q:'Qual tag HTML5 é para conteúdo independente?',o:['<section>','<article>','<div>','<aside>'],c:1,t:'HTML'},{id:'h2',q:'Qual atributo torna elemento editável?',o:['editable','contenteditable','spellcheck','data-editable'],c:1,t:'HTML'},{id:'h3',q:'Para que serve a meta tag viewport?',o:['Definir cores','Tornar responsivo','Carregar JS','Criar formulários'],c:1,t:'HTML'},{id:'c1',q:'Propriedade CSS para espaçamento em Grid?',o:['margin','padding','gap','space'],c:2,t:'CSS'},{id:'c2',q:'Container Queries avaliam o tamanho do...',o:['Viewport','Elemento pai','Resolução','Dispositivo'],c:1,t:'CSS'},{id:'c3',q:'O que significa BEM?',o:['Basic Element Method','Block Element Modifier','Browser Engine Mode','Box Element Model'],c:1,t:'CSS'},{id:'j1',q:'Palavra-chave para variável imutável?',o:['let','var','const','function'],c:2,t:'JavaScript'},{id:'j2',q:'Método para reagir a clique?',o:['setInterval','addEventListener','querySelector','console.log'],c:1,t:'JavaScript'},{id:'j3',q:'O que é uma Promise?',o:['Tipo de variável','Objeto assíncrono','Função síncrona','Método de array'],c:1,t:'JavaScript'},{id:'m1',q:'Complexidade da busca binária?',o:['O(1)','O(n)','O(log n)','O(n²)'],c:2,t:'Matemática'},{id:'m2',q:'¬(p ∧ q) equivale a:',o:['¬p ∧ ¬q','p ∨ q','¬p ∨ ¬q','p ∧ ¬q'],c:2,t:'Matemática'},{id:'m3',q:'Mapa de Karnaugh serve para:',o:['Calcular probabilidade','Simplificar booleanas','Ordenar listas','Criar grafos'],c:1,t:'Matemática'},{id:'i1',q:'Heurística de consistência?',o:['Visibilidade','Consistência e padrões','Prevenção de erros','Estética'],c:1,t:'IHC'},{id:'i2',q:'Lei de Hick afirma:',o:['Alvos maiores são mais rápidos','Mais opções = mais tempo','Usuários preferem padrões','Feedback é essencial'],c:1,t:'IHC'},{id:'i3',q:'"H" no HEART significa?',o:['Honesty','Happiness','Hierarchy','Helpfulness'],c:1,t:'IHC'},{id:'h4',q:'Qual tag é para navegação principal?',o:['<nav>','<header>','<main>','<aside>'],c:0,t:'HTML'},{id:'c4',q:'Qual função CSS define valor flexível?',o:['calc()','clamp()','min()','max()'],c:1,t:'CSS'},{id:'j4',q:'Como se cria uma arrow function?',o:['function(){}','()=>{}','class{}','new Function()'],c:1,t:'JavaScript'},{id:'m4',q:'BFS usa qual estrutura?',o:['Pilha','Fila','Árvore','Grafo'],c:1,t:'Matemática'},{id:'i4',q:'Princípio WCAG "P" significa?',o:['Perceptível','Operável','Preditivo','Permanente'],c:0,t:'IHC'},{id:'h5',q:'Qual atributo para dados customizados?',o:['data-*','custom','data','info'],c:0,t:'HTML'},{id:'c5',q:'Qual seletor é o mais específico?',o:['div','.classe','#id','*'],c:2,t:'CSS'},{id:'j5',q:'Qual método converte JSON para objeto?',o:['JSON.parse()','JSON.stringify()','JSON.convert()','JSON.object()'],c:0,t:'JavaScript'},{id:'m5',q:'Qual a probabilidade de tirar 6 em um dado?',o:['1/2','1/3','1/6','1/12'],c:2,t:'Matemática'},{id:'i5',q:'SUS é uma escala de:',o:['Satisfação','Usabilidade','Performance','Acessibilidade'],c:1,t:'IHC'},{id:'h6',q:'O que faz o atributo hidden?',o:['Esconde o elemento','Mostra','Desabilita','Remove do DOM'],c:0,t:'HTML'},{id:'c6',q:'display:flex é um layout:',o:['Bidimensional','Unidimensional','Em grade','Em tabela'],c:1,t:'CSS'},{id:'j6',q:'Qual método espera uma Promise?',o:['await','async','yield','defer'],c:0,t:'JavaScript'},{id:'m6',q:'O(1) significa tempo:',o:['Linear','Constante','Logarítmico','Exponencial'],c:1,t:'Matemática'},{id:'i6',q:'Teste Think Aloud envolve:',o:['Questionário','Verbalizar pensamentos','Teste A/B','Eye tracking'],c:1,t:'IHC'}];
+
+    function sh(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+    function selQ(){const h=sh(allQ.filter(q=>q.t==='HTML')).slice(0,3);const c=sh(allQ.filter(q=>q.t==='CSS')).slice(0,3);const j=sh(allQ.filter(q=>q.t==='JavaScript')).slice(0,3);const m=sh(allQ.filter(q=>q.t==='Matemática')).slice(0,3);const i=sh(allQ.filter(q=>q.t==='IHC')).slice(0,3);return sh([...h,...c,...j,...m,...i]);}
+
+    function gP(){try{return JSON.parse(localStorage.getItem(SK))||{};}catch(e){return{};}}
+    function sP(p){localStorage.setItem(SK,JSON.stringify(p));}
+    function gN(){return localStorage.getItem(NK)||'';}
+    function sN(n){localStorage.setItem(NK,n);}
+    function gPt(){return parseInt(localStorage.getItem(PK)||'0');}
+    function aP(pts){let c=gPt();c+=pts;localStorage.setItem(PK,c);document.getElementById('pointsDisplay').innerHTML=`<i class="fas fa-star"></i> ${c} pts`;updateBadges(c);}
+    function updateBadges(pts){const bc=document.getElementById('badgeContainer');let h='';badges.forEach(b=>{h+=`<span class="badge-icon${pts>=b.min?' earned':''}" title="${b.name} (${b.min} pts)">${b.icon}</span>`;});bc.innerHTML=h;}
+
+    function uG(){
+        const p=gP();const comp=Object.values(p).filter(v=>v).length;
+        document.getElementById('modulesDone').textContent=`${comp}/${TM} módulos`;
+        const steps=document.querySelectorAll('.roadmap-step');
+        const conns=[document.getElementById('conn1'),document.getElementById('conn2'),document.getElementById('conn3'),document.getElementById('conn4'),document.getElementById('conn5')];
+        steps.forEach((s,i)=>{const pg=s.dataset.page;if(p[pg]){s.classList.add('completed');if(i<5)conns[i].classList.add('done');}else{s.classList.remove('completed');if(i<5)conns[i].classList.remove('done');}});
+        const nome=gN();const ge=document.getElementById('greetingDisplay');
+        if(nome){ge.textContent=`👋 Olá, ${nome}!`;document.getElementById('userNameInput').value=nome;}else{ge.textContent='';}
+    }
+
+    function uS(){
+        const today=new Date().toDateString(),last=localStorage.getItem(STK);let streak=0;
+        if(last){const diff=Math.floor((new Date(today)-new Date(last))/86400000);if(diff===1)streak=parseInt(localStorage.getItem('streak_count')||'0')+1;else if(diff===0)streak=parseInt(localStorage.getItem('streak_count')||'0');else streak=1;}else streak=1;
+        localStorage.setItem(STK,today);localStorage.setItem('streak_count',streak);
+        document.getElementById('streakDisplay').innerHTML=`<i class="fas fa-fire"></i> ${streak} dias`;
+    }
+    uS();
+
+    document.getElementById('btnSaveName').addEventListener('click',()=>{const n=document.getElementById('userNameInput').value.trim();if(n){sN(n);uG();alert(`Cadastro realizado, ${n}! Seu progresso será salvo.`);}});
+
+    const mp=document.getElementById('mainPage'),pgs=document.querySelectorAll('.page-container');
+    function nT(pid){
+        if(pid==='main'){mp.classList.remove('hidden');pgs.forEach(p=>p.classList.remove('active-page'));document.getElementById('roadmap').style.display='flex';document.getElementById('cardGrid').style.display='grid';}
+        else{mp.classList.add('hidden');pgs.forEach(p=>p.classList.remove('active-page'));const t=document.getElementById(pid+'Page');if(t){t.classList.add('active-page');t.scrollIntoView({behavior:'smooth',block:'start'});if(pid==='quiz')bQ();const pr=gP();if(!pr[pid]){pr[pid]=true;sP(pr);uG();aP(50);}}document.getElementById('roadmap').style.display='none';document.getElementById('cardGrid').style.display='none';}
+    }
+
+    document.querySelectorAll('.roadmap-step').forEach(s=>{s.addEventListener('click',()=>nT(s.dataset.page));s.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();nT(s.dataset.page);}});});
+    document.querySelectorAll('.topic-card').forEach(c=>{c.addEventListener('click',()=>nT(c.dataset.page));c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();nT(c.dataset.page);}});});
+    document.querySelectorAll('.back-btn').forEach(b=>b.addEventListener('click',()=>nT('main')));
+
+    document.getElementById('searchInput').addEventListener('input',function(){const term=this.value.toLowerCase().trim();document.querySelectorAll('.topic-card').forEach(c=>{const kw=c.dataset.keywords||'',tx=c.textContent.toLowerCase();c.style.display=(term===''||kw.includes(term)||tx.includes(term))?'flex':'none';});});
+
+    function bQ(){
+        const ct=document.getElementById('quizContainer'),sd=document.getElementById('quizScore'),cb=document.getElementById('btnCertificate');
+        sd.style.display='none';cb.style.display='none';const qs=selQ();let h='';
+        qs.forEach((q,i)=>{h+=`<div class="quiz-item" data-quiz="${q.id}" data-correct="${q.c}"><p class="quiz-question"><span style="color:#a78bfa;">[${q.t}]</span> ${i+1}. ${q.q}</p><div class="quiz-options">${q.o.map((o,ix)=>`<label><input type="radio" name="${q.id}" value="${ix}"> ${o}</label>`).join('')}</div><button class="btn-check" data-quiz="${q.id}">Verificar</button><div class="quiz-feedback"></div></div>`;});
+        h+=`<button class="btn-check" id="btnScoreAll" style="display:block;margin:1rem auto;padding:0.8rem 2rem;">📊 Ver pontuação geral</button>`;ct.innerHTML=h;
+        ct.querySelectorAll('.btn-check[data-quiz]').forEach(b=>{b.addEventListener('click',function(){const qi=this.dataset.quiz;const it=ct.querySelector(`.quiz-item[data-quiz="${qi}"]`);const cor=parseInt(it.dataset.correct);const fb=it.querySelector('.quiz-feedback');const sl=it.querySelector(`input[name="${qi}"]:checked`);if(!sl){fb.className='quiz-feedback wrong-feedback';fb.textContent='⚠️ Selecione uma opção.';return;}if(parseInt(sl.value)===cor){fb.className='quiz-feedback correct-feedback';fb.textContent='✅ Correto! +15 pts';aP(15);}else{fb.className='quiz-feedback wrong-feedback';fb.textContent='❌ Incorreto.';}});});
+        document.getElementById('btnScoreAll').addEventListener('click',()=>{let cor=0;const its=ct.querySelectorAll('.quiz-item');its.forEach(it=>{const qi=it.dataset.quiz;const c=parseInt(it.dataset.correct);const sl=it.querySelector(`input[name="${qi}"]:checked`);if(sl&&parseInt(sl.value)===c)cor++;});const pct=Math.round(cor/its.length*100);sd.innerHTML=`🏆 ${cor}/${its.length} (${pct}%). ${pct>=75?'🎉 Excelente!':pct>=50?'📚 Continue!':'🔄 Revise.'}`;sd.style.display='block';if(pct>=75){cb.style.display='inline-block';aP(50);}sd.scrollIntoView({behavior:'smooth'});});
+        document.getElementById('btnCertificate').addEventListener('click',()=>{const nome=gN()||'Estudante';const w=window.open('','cert','width=800,height=600');w.document.write(`<html><head><title>Certificado</title><style>body{font-family:Georgia;text-align:center;padding:3rem;}.cert{border:10px double #3b82f6;padding:3rem;max-width:700px;margin:auto;}h1{font-size:2.5rem;color:#1e293b;}.nome{font-size:2rem;font-weight:bold;color:#3b82f6;margin:1.5rem 0;}</style></head><body><div class="cert"><h1>🎓 Certificado</h1><p>Certificamos que</p><div class="nome">${nome}</div><p>concluiu o <strong>ESTUDO DIRIGIDO</strong> em HTML5, CSS3, JavaScript, Matemática Computacional e IHC.</p><p>Data: ${new Date().toLocaleDateString('pt-BR')}</p></div><script>window.print();<`+`/script></body></html>`);w.document.close();});
+    }
+
+    const bt=document.getElementById('btnTheme');
+    function aT(t){if(t==='light'){document.body.classList.add('light');bt.innerHTML='<i class="fas fa-sun"></i>';}else{document.body.classList.remove('light');bt.innerHTML='<i class="fas fa-moon"></i>';}}
+    const st=localStorage.getItem(TK)||'dark';aT(st);
+    bt.addEventListener('click',()=>{const nt=document.body.classList.contains('light')?'dark':'light';localStorage.setItem(TK,nt);aT(nt);});
+
+    const he=document.getElementById('htmlEditor'),hp=document.getElementById('htmlPreview');
+    if(he&&hp){function uh(){const d=hp.contentDocument||hp.contentWindow.document;d.open();d.write(he.value);d.close();}document.getElementById('btnRunHtml').addEventListener('click',uh);uh();}
+    const che=document.getElementById('cssHtmlEditor'),ce=document.getElementById('cssEditor'),cp=document.getElementById('cssPreview');
+    if(che&&ce&&cp){function uc(){const d=cp.contentDocument||cp.contentWindow.document;d.open();d.write(`<style>${ce.value}</style>${che.value}`);d.close();}document.getElementById('btnRunCss').addEventListener('click',uc);uc();}
+    const je=document.getElementById('jsEditor'),jo=document.getElementById('jsOutput');
+    if(je&&jo){document.getElementById('btnRunJs').addEventListener('click',()=>{const code=je.value;const logs=[];const fc={log:(...a)=>logs.push(a.join(' '))};try{const fn=new Function('console',code);fn(fc);jo.value=logs.join('\n')||'Executado sem saída.';}catch(e){jo.value='Erro: '+e.message;}});}
+
+    document.getElementById('lastAccess').textContent='Último acesso: '+new Date().toLocaleString('pt-BR');
+    uG();updateBadges(gPt());
+    document.getElementById('pointsDisplay').innerHTML=`<i class="fas fa-star"></i> ${gPt()} pts`;
+})();
+</script>
+<footer>📘 ESTUDO DIRIGIDO — Ferramenta educacional gratuita e independente. Conteúdo completo com exemplos do cotidiano.</footer>
+</body>
+</html>
